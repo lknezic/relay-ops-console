@@ -38,7 +38,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     relayStatusSubtext: "All systems operational",
     recommendedAction: "No action needed — Relay is working autonomously.",
     recommendedActionSubtext: "No operator action needed right now",
-    primaryCTA: { label: "View progress" },
+    primaryCTA: { label: "See current work" },
     secondaryCTA: { label: "Pause session" },
     overnightSafe: true,
     progressSteps: [
