@@ -127,7 +127,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     relayStatusSubtext: "Session is blocked",
     recommendedAction: "Review the failure and choose a recovery option to unblock Relay.",
     recommendedActionSubtext: "Relay is stopped until you resolve this",
-    primaryCTA: { label: "View failure & recover" },
+    primaryCTA: { label: "See what went wrong" },
     secondaryCTA: { label: "Pause session" },
     overnightSafe: false,
     overnightReason: "The session is blocked by a failed verification and needs your input.",
