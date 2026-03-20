@@ -267,7 +267,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     recommendedAction: "Start a new session when you have work for Relay.",
     recommendedActionSubtext: "Relay is idle and ready",
     primaryCTA: { label: "Start session" },
-    secondaryCTA: { label: "View history" },
+    secondaryCTA: { label: "See past sessions" },
     overnightSafe: true,
     progressSteps: [
       { label: "Ready", completed: false, active: true },
