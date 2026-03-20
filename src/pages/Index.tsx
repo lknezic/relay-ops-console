@@ -90,7 +90,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center">
               <Radio className="w-4 h-4" />
@@ -100,15 +100,15 @@ const Index = () => {
               <p className="text-[10px] text-muted-foreground -mt-0.5">Operator Console</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Link
               to="/playbook"
-              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-muted/60"
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-2 sm:px-3 py-1.5 rounded-lg hover:bg-muted/60"
             >
               <BookOpen className="w-3.5 h-3.5" />
-              How this works
+              <span className="hidden sm:inline">How this works</span>
             </Link>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground hidden sm:inline">
               Last updated: just now
             </span>
             <div className="w-7 h-7 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-xs font-medium">
