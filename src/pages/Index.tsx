@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { StatusStrip } from "@/components/relay/StatusStrip";
 import { SessionHero } from "@/components/relay/SessionHero";
 import { NeedsAttention, IssueCard } from "@/components/relay/NeedsAttention";
@@ -8,7 +9,7 @@ import { ApprovalModal } from "@/components/relay/ApprovalModal";
 import { RecoveryModal } from "@/components/relay/RecoveryModal";
 import { DiagnosticsDrawer } from "@/components/relay/DiagnosticsDrawer";
 import { OvernightModal } from "@/components/relay/OvernightModal";
-import { Radio } from "lucide-react";
+import { Radio, BookOpen, Bug } from "lucide-react";
 import {
   SessionPrimaryState,
   STATE_CONFIGS,
@@ -43,6 +44,7 @@ const Index = () => {
   const [recoveryOpen, setRecoveryOpen] = useState(false);
   const [diagnosticsOpen, setDiagnosticsOpen] = useState(false);
   const [overnightOpen, setOvernightOpen] = useState(false);
+  const [showDevTools, setShowDevTools] = useState(false);
 
   const config = STATE_CONFIGS[sessionState];
 
@@ -99,22 +101,13 @@ const Index = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            {/* State switcher for demo */}
-            <div className="flex items-center gap-1 flex-wrap">
-              {DEMO_STATES.map((s) => (
-                <button
-                  key={s.value}
-                  onClick={() => setSessionState(s.value)}
-                  className={`text-[10px] px-2 py-1 rounded-md transition-colors ${
-                    sessionState === s.value
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted"
-                  }`}
-                >
-                  {s.label}
-                </button>
-              ))}
-            </div>
+            <Link
+              to="/playbook"
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-muted/60"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              How this works
+            </Link>
             <span className="text-xs text-muted-foreground">
               Last updated: just now
             </span>
@@ -124,6 +117,41 @@ const Index = () => {
           </div>
         </div>
       </header>
+
+      {/* Dev-only state switcher */}
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="mt-3">
+          <button
+            onClick={() => setShowDevTools(!showDevTools)}
+            className="flex items-center gap-1.5 text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+          >
+            <Bug className="w-3 h-3" />
+            {showDevTools ? "Hide" : "Show"} state preview (dev only)
+          </button>
+          {showDevTools && (
+            <div className="mt-2 p-3 rounded-lg bg-muted/30 border border-dashed border-border">
+              <p className="text-[10px] text-muted-foreground mb-2 font-medium uppercase tracking-wide">
+                ⚠ Dev preview — switch between states to test all views
+              </p>
+              <div className="flex items-center gap-1 flex-wrap">
+                {DEMO_STATES.map((s) => (
+                  <button
+                    key={s.value}
+                    onClick={() => setSessionState(s.value)}
+                    className={`text-[10px] px-2.5 py-1 rounded-md transition-colors ${
+                      sessionState === s.value
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-muted border border-border"
+                    }`}
+                  >
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Content */}
       <main className="max-w-7xl mx-auto px-6 py-6 space-y-6">

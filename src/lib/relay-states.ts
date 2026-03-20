@@ -38,7 +38,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     relayStatusSubtext: "All systems operational",
     recommendedAction: "No action needed — Relay is working autonomously.",
     recommendedActionSubtext: "No operator action needed right now",
-    primaryCTA: { label: "View progress" },
+    primaryCTA: { label: "See current work" },
     secondaryCTA: { label: "Pause session" },
     overnightSafe: true,
     progressSteps: [
@@ -67,7 +67,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     relayStatusSubtext: "All systems operational",
     recommendedAction: "No action needed — Relay is waiting for the reviewer to finish.",
     recommendedActionSubtext: "No operator action needed right now",
-    primaryCTA: { label: "View output" },
+    primaryCTA: { label: "Review latest result" },
     secondaryCTA: { label: "Pause session" },
     overnightSafe: true,
     progressSteps: [
@@ -127,7 +127,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     relayStatusSubtext: "Session is blocked",
     recommendedAction: "Review the failure and choose a recovery option to unblock Relay.",
     recommendedActionSubtext: "Relay is stopped until you resolve this",
-    primaryCTA: { label: "View failure & recover" },
+    primaryCTA: { label: "See what went wrong" },
     secondaryCTA: { label: "Pause session" },
     overnightSafe: false,
     overnightReason: "The session is blocked by a failed verification and needs your input.",
@@ -157,7 +157,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     recommendedAction: "Repair the workspace so Relay can resume the session.",
     recommendedActionSubtext: "Relay is paused until workspace is fixed",
     primaryCTA: { label: "Repair workspace" },
-    secondaryCTA: { label: "View details" },
+    secondaryCTA: { label: "Open session details" },
     overnightSafe: false,
     overnightReason: "The workspace has conflicts that need manual resolution.",
     progressSteps: [
@@ -184,7 +184,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     relayStatusSubtext: "No progress reported recently",
     recommendedAction: "Investigate whether the run is stuck or just taking longer than expected.",
     recommendedActionSubtext: "Check if Relay needs help",
-    primaryCTA: { label: "Investigate" },
+    primaryCTA: { label: "Check what's happening" },
     secondaryCTA: { label: "Pause session" },
     overnightSafe: false,
     overnightReason: "Relay hasn't reported progress and may be stuck.",
@@ -238,7 +238,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     relayStatusSubtext: "All systems operational",
     recommendedAction: "Review the completed work or start a new session.",
     recommendedActionSubtext: "Nothing more to do for this session",
-    primaryCTA: { label: "View results" },
+    primaryCTA: { label: "Review completed work" },
     secondaryCTA: { label: "Start new session" },
     overnightSafe: true,
     progressSteps: [
@@ -267,7 +267,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     recommendedAction: "Start a new session when you have work for Relay.",
     recommendedActionSubtext: "Relay is idle and ready",
     primaryCTA: { label: "Start session" },
-    secondaryCTA: { label: "View history" },
+    secondaryCTA: { label: "See past sessions" },
     overnightSafe: true,
     progressSteps: [
       { label: "Ready", completed: false, active: true },
