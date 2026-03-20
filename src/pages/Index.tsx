@@ -118,40 +118,42 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Dev-only state switcher */}
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mt-3">
-          <button
-            onClick={() => setShowDevTools(!showDevTools)}
-            className="flex items-center gap-1.5 text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-          >
-            <Bug className="w-3 h-3" />
-            {showDevTools ? "Hide" : "Show"} state preview (dev only)
-          </button>
-          {showDevTools && (
-            <div className="mt-2 p-3 rounded-lg bg-muted/30 border border-dashed border-border">
-              <p className="text-[10px] text-muted-foreground mb-2 font-medium uppercase tracking-wide">
-                ⚠ Dev preview — switch between states to test all views
-              </p>
-              <div className="flex items-center gap-1 flex-wrap">
-                {DEMO_STATES.map((s) => (
-                  <button
-                    key={s.value}
-                    onClick={() => setSessionState(s.value)}
-                    className={`text-[10px] px-2.5 py-1 rounded-md transition-colors ${
-                      sessionState === s.value
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-muted border border-border"
-                    }`}
-                  >
-                    {s.label}
-                  </button>
-                ))}
+      {/* Dev-only state switcher — hidden in production */}
+      {import.meta.env.DEV && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="mt-3">
+            <button
+              onClick={() => setShowDevTools(!showDevTools)}
+              className="flex items-center gap-1.5 text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+            >
+              <Bug className="w-3 h-3" />
+              {showDevTools ? "Hide" : "Show"} state preview (dev only)
+            </button>
+            {showDevTools && (
+              <div className="mt-2 p-3 rounded-lg bg-muted/30 border border-dashed border-border">
+                <p className="text-[10px] text-muted-foreground mb-2 font-medium uppercase tracking-wide">
+                  ⚠ Dev preview — switch between states to test all views
+                </p>
+                <div className="flex items-center gap-1 flex-wrap">
+                  {DEMO_STATES.map((s) => (
+                    <button
+                      key={s.value}
+                      onClick={() => setSessionState(s.value)}
+                      className={`text-[10px] px-2.5 py-1 rounded-md transition-colors ${
+                        sessionState === s.value
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground hover:bg-muted border border-border"
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Content */}
       <main className="max-w-7xl mx-auto px-6 py-6 space-y-6">
