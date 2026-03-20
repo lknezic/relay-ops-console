@@ -32,7 +32,7 @@ export function SessionHero({
             {sessionName}
           </h1>
         </div>
-        <Badge variant={config.badgeVariant} className="text-xs px-3 py-1.5 shrink-0">
+        <Badge variant={config.badgeVariant} className="text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 shrink-0">
           {config.title}
         </Badge>
       </div>
