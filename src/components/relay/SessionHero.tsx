@@ -75,11 +75,11 @@ export function SessionHero({
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <Button variant="relay" size="lg" onClick={onPrimaryAction}>
+      <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <Button variant="relay" size="lg" onClick={onPrimaryAction} className="text-sm sm:text-base">
           {config.primaryCTA.label}
         </Button>
-        <Button variant="relay-secondary" size="default" onClick={onSecondaryAction}>
+        <Button variant="relay-secondary" size="default" onClick={onSecondaryAction} className="text-sm">
           {config.secondaryCTA.label}
         </Button>
         <button

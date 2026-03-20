@@ -156,14 +156,12 @@ const Index = () => {
       )}
 
       {/* Content */}
-      <main className="max-w-7xl mx-auto px-6 py-6 space-y-6">
-        {/* Status Strip — driven by single state */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
         <section className="animate-relay-fade-up">
           <StatusStrip config={config} />
         </section>
 
-        {/* Main content row */}
-        <section className="grid grid-cols-1 lg:grid-cols-5 gap-6 animate-relay-fade-up" style={{ animationDelay: "100ms" }}>
+        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6 animate-relay-fade-up" style={{ animationDelay: "100ms" }}>
           <div className="lg:col-span-3">
             <SessionHero
               sessionName={SESSION_NAME}
@@ -179,8 +177,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Lower row */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-relay-fade-up" style={{ animationDelay: "200ms" }}>
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 animate-relay-fade-up" style={{ animationDelay: "200ms" }}>
           <SessionTimeline steps={config.timelineSteps} />
           <RecentActivity events={activityEvents} />
         </section>
