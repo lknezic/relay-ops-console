@@ -86,7 +86,7 @@ export function SessionHero({
           onClick={onAdvancedDetails}
           className="ml-auto text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
         >
-          Advanced details
+          More details
           <ChevronRight className="w-3 h-3" />
         </button>
       </div>
