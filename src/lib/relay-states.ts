@@ -184,7 +184,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     relayStatusSubtext: "No progress reported recently",
     recommendedAction: "Investigate whether the run is stuck or just taking longer than expected.",
     recommendedActionSubtext: "Check if Relay needs help",
-    primaryCTA: { label: "Investigate" },
+    primaryCTA: { label: "Check what's happening" },
     secondaryCTA: { label: "Pause session" },
     overnightSafe: false,
     overnightReason: "Relay hasn't reported progress and may be stuck.",
