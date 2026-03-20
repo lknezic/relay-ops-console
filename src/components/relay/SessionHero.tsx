@@ -28,7 +28,7 @@ export function SessionHero({
           <p className="text-xs font-medium tracking-wide uppercase text-muted-foreground mb-2">
             Current Session
           </p>
-          <h1 className="text-xl lg:text-2xl font-semibold text-foreground text-balance leading-tight">
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-foreground text-balance leading-tight">
             {sessionName}
           </h1>
         </div>
