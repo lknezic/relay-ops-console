@@ -1,28 +1,25 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
+import { OvernightBadge } from "./OvernightBadge";
+import { StateConfig } from "@/lib/relay-states";
 
 interface SessionHeroProps {
   sessionName: string;
-  stateBadge: string;
-  badgeVariant: "healthy" | "warning" | "danger" | "info" | "paused";
-  explanation: string;
-  progress: number;
-  progressSteps: { label: string; completed: boolean; active: boolean }[];
-  primaryAction: { label: string; onClick: () => void };
-  secondaryAction: { label: string; onClick: () => void };
+  config: StateConfig;
+  onPrimaryAction: () => void;
+  onSecondaryAction: () => void;
   onAdvancedDetails: () => void;
+  onStartOvernight: () => void;
 }
 
 export function SessionHero({
   sessionName,
-  stateBadge,
-  badgeVariant,
-  explanation,
-  progressSteps,
-  primaryAction,
-  secondaryAction,
+  config,
+  onPrimaryAction,
+  onSecondaryAction,
   onAdvancedDetails,
+  onStartOvernight,
 }: SessionHeroProps) {
   return (
     <div className="relay-card-elevated p-6 lg:p-8 flex flex-col h-full">
@@ -35,19 +32,24 @@ export function SessionHero({
             {sessionName}
           </h1>
         </div>
-        <Badge variant={badgeVariant} className="text-xs px-3 py-1.5 shrink-0">
-          {stateBadge}
+        <Badge variant={config.badgeVariant} className="text-xs px-3 py-1.5 shrink-0">
+          {config.title}
         </Badge>
       </div>
 
-      <p className="text-sm text-muted-foreground text-pretty mb-8 max-w-md">
-        {explanation}
+      <p className="text-sm text-muted-foreground text-pretty mb-6 max-w-md">
+        {config.explanation}
       </p>
+
+      {/* Overnight readiness */}
+      <div className="mb-6">
+        <OvernightBadge config={config} onStartOvernight={onStartOvernight} />
+      </div>
 
       {/* Progress timeline */}
       <div className="mb-8 flex-1">
         <div className="flex items-center gap-1">
-          {progressSteps.map((step, i) => (
+          {config.progressSteps.map((step, i) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-2">
               <div
                 className={`h-1.5 w-full rounded-full transition-colors ${
@@ -74,11 +76,11 @@ export function SessionHero({
 
       {/* Actions */}
       <div className="flex items-center gap-3 flex-wrap">
-        <Button variant="relay" size="lg" onClick={primaryAction.onClick}>
-          {primaryAction.label}
+        <Button variant="relay" size="lg" onClick={onPrimaryAction}>
+          {config.primaryCTA.label}
         </Button>
-        <Button variant="relay-secondary" size="default" onClick={secondaryAction.onClick}>
-          {secondaryAction.label}
+        <Button variant="relay-secondary" size="default" onClick={onSecondaryAction}>
+          {config.secondaryCTA.label}
         </Button>
         <button
           onClick={onAdvancedDetails}
