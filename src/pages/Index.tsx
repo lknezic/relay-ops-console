@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { StatusStrip } from "@/components/relay/StatusStrip";
 import { SessionHero } from "@/components/relay/SessionHero";
 import { NeedsAttention, IssueCard } from "@/components/relay/NeedsAttention";
@@ -7,78 +7,82 @@ import { RecentActivity } from "@/components/relay/RecentActivity";
 import { ApprovalModal } from "@/components/relay/ApprovalModal";
 import { RecoveryModal } from "@/components/relay/RecoveryModal";
 import { DiagnosticsDrawer } from "@/components/relay/DiagnosticsDrawer";
+import { OvernightModal } from "@/components/relay/OvernightModal";
 import { Radio } from "lucide-react";
+import {
+  SessionPrimaryState,
+  STATE_CONFIGS,
+  ALL_ISSUES,
+} from "@/lib/relay-states";
+
+const SESSION_NAME = "Refactor auth middleware for token refresh";
+
+const DEMO_STATES: { label: string; value: SessionPrimaryState }[] = [
+  { label: "Running", value: "safe_running" },
+  { label: "Waiting for review", value: "waiting_for_review" },
+  { label: "Needs approval", value: "needs_approval" },
+  { label: "Blocked", value: "blocked" },
+  { label: "Needs repair", value: "needs_repair" },
+  { label: "Stale", value: "stale" },
+  { label: "Paused", value: "paused" },
+  { label: "Completed", value: "completed" },
+];
+
+const activityEvents = [
+  { id: "1", type: "success" as const, message: "Verification passed for phase 2 — all tests green", time: "2 min ago" },
+  { id: "2", type: "info" as const, message: "Review requested — waiting for reviewer", time: "2 min ago" },
+  { id: "3", type: "success" as const, message: "Execution phase 2 completed successfully", time: "5 min ago" },
+  { id: "4", type: "action" as const, message: "Operator approved session start", time: "12 min ago" },
+  { id: "5", type: "success" as const, message: "Execution phase 1 completed", time: "10 min ago" },
+  { id: "6", type: "info" as const, message: "Session initialized and workspace prepared", time: "12 min ago" },
+];
 
 const Index = () => {
+  const [sessionState, setSessionState] = useState<SessionPrimaryState>("waiting_for_review");
   const [approvalOpen, setApprovalOpen] = useState(false);
   const [recoveryOpen, setRecoveryOpen] = useState(false);
   const [diagnosticsOpen, setDiagnosticsOpen] = useState(false);
+  const [overnightOpen, setOvernightOpen] = useState(false);
 
-  const issues: IssueCard[] = [
-    {
-      id: "1",
-      severity: "warning",
-      title: "Needs your approval",
-      explanation:
-        "A new coding task is ready to start but requires your permission before Relay can begin work.",
-      actionLabel: "Review & approve",
-      onAction: () => setApprovalOpen(true),
-    },
-    {
-      id: "2",
-      severity: "critical",
-      title: "Review failed",
-      explanation:
-        "The last completed task did not pass verification. The output may contain errors that need to be addressed.",
-      actionLabel: "View details",
-      onAction: () => setRecoveryOpen(true),
-    },
-    {
-      id: "3",
-      severity: "warning",
-      title: "Workspace needs repair",
-      explanation:
-        "The session workspace has conflicting files. Relay can't continue until this is resolved.",
-      actionLabel: "Repair workspace",
-      onAction: () => setRecoveryOpen(true),
-    },
-    {
-      id: "4",
-      severity: "info",
-      title: "Run appears stalled",
-      explanation:
-        "Relay hasn't reported progress in over 15 minutes. This may be normal for complex tasks, or it may indicate a problem.",
-      actionLabel: "Investigate",
-      onAction: () => setDiagnosticsOpen(true),
-    },
-  ];
+  const config = STATE_CONFIGS[sessionState];
 
-  const timelineSteps = [
-    { label: "Task approved", status: "completed" as const, time: "14:32" },
-    { label: "Execution started", status: "completed" as const, time: "14:32" },
-    { label: "Execution completed", status: "completed" as const, time: "14:38" },
-    { label: "Verification passed", status: "completed" as const, time: "14:38" },
-    { label: "Review started", status: "active" as const, time: "14:40" },
-    { label: "Review completed", status: "pending" as const },
-    { label: "Next step ready", status: "pending" as const },
-  ];
+  // Derive issues from current state — no contradictions
+  const issues: IssueCard[] = useMemo(() => {
+    const issueActionMap: Record<string, () => void> = {
+      needs_approval: () => setApprovalOpen(true),
+      review_failed: () => setRecoveryOpen(true),
+      workspace_repair: () => setRecoveryOpen(true),
+      stale_run: () => setDiagnosticsOpen(true),
+      setup_required: () => setDiagnosticsOpen(true),
+    };
 
-  const progressSteps = [
-    { label: "Approved", completed: true, active: false },
-    { label: "Running", completed: true, active: false },
-    { label: "Verifying", completed: true, active: false },
-    { label: "Reviewing", completed: false, active: true },
-    { label: "Complete", completed: false, active: false },
-  ];
+    return config.allowedIssueIds
+      .filter((id) => ALL_ISSUES[id])
+      .map((id) => ({
+        ...ALL_ISSUES[id],
+        id,
+        onAction: issueActionMap[id] || (() => {}),
+      }));
+  }, [sessionState, config.allowedIssueIds]);
 
-  const activityEvents = [
-    { id: "1", type: "success" as const, message: "Verification passed for phase 2 — all tests green", time: "2 min ago" },
-    { id: "2", type: "info" as const, message: "Review requested — waiting for reviewer", time: "2 min ago" },
-    { id: "3", type: "success" as const, message: "Execution phase 2 completed successfully", time: "5 min ago" },
-    { id: "4", type: "action" as const, message: "Operator approved session start", time: "12 min ago" },
-    { id: "5", type: "success" as const, message: "Execution phase 1 completed", time: "10 min ago" },
-    { id: "6", type: "info" as const, message: "Session initialized and workspace prepared", time: "12 min ago" },
-  ];
+  // Primary CTA handler — context-aware
+  const handlePrimaryAction = () => {
+    switch (sessionState) {
+      case "needs_approval":
+        setApprovalOpen(true);
+        break;
+      case "blocked":
+      case "needs_repair":
+        setRecoveryOpen(true);
+        break;
+      case "stale":
+        setDiagnosticsOpen(true);
+        break;
+      default:
+        setDiagnosticsOpen(true);
+        break;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -95,6 +99,22 @@ const Index = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            {/* State switcher for demo */}
+            <div className="flex items-center gap-1 flex-wrap">
+              {DEMO_STATES.map((s) => (
+                <button
+                  key={s.value}
+                  onClick={() => setSessionState(s.value)}
+                  className={`text-[10px] px-2 py-1 rounded-md transition-colors ${
+                    sessionState === s.value
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-muted"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
             <span className="text-xs text-muted-foreground">
               Last updated: just now
             </span>
@@ -107,29 +127,21 @@ const Index = () => {
 
       {/* Content */}
       <main className="max-w-7xl mx-auto px-6 py-6 space-y-6">
-        {/* Status Strip */}
+        {/* Status Strip — driven by single state */}
         <section className="animate-relay-fade-up">
-          <StatusStrip
-            relayStatus="healthy"
-            sessionState="Waiting for review"
-            sessionBadgeVariant="info"
-            recommendedAction="No action needed — Relay is waiting for the reviewer to finish."
-          />
+          <StatusStrip config={config} />
         </section>
 
         {/* Main content row */}
         <section className="grid grid-cols-1 lg:grid-cols-5 gap-6 animate-relay-fade-up" style={{ animationDelay: "100ms" }}>
           <div className="lg:col-span-3">
             <SessionHero
-              sessionName="Refactor auth middleware for token refresh"
-              stateBadge="Waiting for review"
-              badgeVariant="info"
-              explanation="Relay finished coding and is now waiting for the automated reviewer to check the output. You don't need to do anything yet."
-              progress={65}
-              progressSteps={progressSteps}
-              primaryAction={{ label: "View output", onClick: () => {} }}
-              secondaryAction={{ label: "Pause session", onClick: () => {} }}
+              sessionName={SESSION_NAME}
+              config={config}
+              onPrimaryAction={handlePrimaryAction}
+              onSecondaryAction={() => {}}
               onAdvancedDetails={() => setDiagnosticsOpen(true)}
+              onStartOvernight={() => setOvernightOpen(true)}
             />
           </div>
           <div className="lg:col-span-2">
@@ -139,7 +151,7 @@ const Index = () => {
 
         {/* Lower row */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-relay-fade-up" style={{ animationDelay: "200ms" }}>
-          <SessionTimeline steps={timelineSteps} />
+          <SessionTimeline steps={config.timelineSteps} />
           <RecentActivity events={activityEvents} />
         </section>
       </main>
@@ -148,7 +160,7 @@ const Index = () => {
       <ApprovalModal
         open={approvalOpen}
         onOpenChange={setApprovalOpen}
-        sessionName="Refactor auth middleware for token refresh"
+        sessionName={SESSION_NAME}
         taskSummary="Update the authentication middleware to handle token refresh automatically. This involves modifying the JWT validation logic and adding retry behavior for expired tokens."
         estimatedScope="3 files modified, ~120 lines changed"
       />
@@ -180,6 +192,13 @@ const Index = () => {
       <DiagnosticsDrawer
         open={diagnosticsOpen}
         onOpenChange={setDiagnosticsOpen}
+      />
+
+      <OvernightModal
+        open={overnightOpen}
+        onOpenChange={setOvernightOpen}
+        sessionState={sessionState}
+        sessionName={SESSION_NAME}
       />
     </div>
   );
