@@ -117,18 +117,15 @@ const sections = [
 export default function Playbook() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="border-b border-border bg-card">
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link
-              to="/"
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to console
-            </Link>
-          </div>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <Link
+            to="/"
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="hidden sm:inline">Back to console</span>
+          </Link>
           <div className="flex items-center gap-2">
             <HelpCircle className="w-4 h-4 text-muted-foreground" />
             <span className="text-sm font-medium text-foreground">Operator Playbook</span>
@@ -136,7 +133,7 @@ export default function Playbook() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-10">
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         {/* Hero */}
         <div className="mb-12 animate-relay-fade-up">
           <h1 className="text-2xl font-semibold text-foreground mb-3 tracking-tight">

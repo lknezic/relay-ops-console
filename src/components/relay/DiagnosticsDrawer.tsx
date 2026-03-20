@@ -17,7 +17,7 @@ export function DiagnosticsDrawer({ open, onOpenChange }: DiagnosticsDrawerProps
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="sm:max-w-lg w-full overflow-y-auto">
         <SheetHeader className="mb-6">
-          <SheetTitle>Advanced Details</SheetTitle>
+          <SheetTitle>Session Details</SheetTitle>
           <SheetDescription>
             Technical information for troubleshooting. Most operators won't need this.
           </SheetDescription>

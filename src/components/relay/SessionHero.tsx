@@ -22,7 +22,7 @@ export function SessionHero({
   onStartOvernight,
 }: SessionHeroProps) {
   return (
-    <div className="relay-card-elevated p-6 lg:p-8 flex flex-col h-full">
+    <div className="relay-card-elevated p-5 sm:p-6 lg:p-8 flex flex-col h-full">
       <div className="flex items-start justify-between mb-6">
         <div>
           <p className="text-xs font-medium tracking-wide uppercase text-muted-foreground mb-2">
@@ -75,11 +75,11 @@ export function SessionHero({
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <Button variant="relay" size="lg" onClick={onPrimaryAction}>
+      <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <Button variant="relay" size="lg" onClick={onPrimaryAction} className="text-sm sm:text-base">
           {config.primaryCTA.label}
         </Button>
-        <Button variant="relay-secondary" size="default" onClick={onSecondaryAction}>
+        <Button variant="relay-secondary" size="default" onClick={onSecondaryAction} className="text-sm">
           {config.secondaryCTA.label}
         </Button>
         <button

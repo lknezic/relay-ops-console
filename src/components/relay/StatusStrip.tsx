@@ -31,7 +31,7 @@ export function StatusStrip({ config }: StatusStripProps) {
   const visuals = relayStatusVisuals[config.relayStatus];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 stagger-children">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 stagger-children">
       {/* Relay Status */}
       <div className="relay-card-elevated p-5">
         <div className="flex items-center gap-3 mb-3">

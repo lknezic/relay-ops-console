@@ -12,7 +12,7 @@ interface OvernightModalProps {
   sessionName: string;
 }
 
-const STEPS = ["Confirm session", "Set phase limit", "Approve next step", "Preflight checks", "Result"];
+const STEPS = ["Confirm session", "Approve next step", "Preflight checks", "Result"];
 
 export function OvernightModal({ open, onOpenChange, sessionState, sessionName }: OvernightModalProps) {
   const [step, setStep] = useState(0);
@@ -28,12 +28,11 @@ export function OvernightModal({ open, onOpenChange, sessionState, sessionName }
     onOpenChange(false);
   };
 
-  // On step 2, if next step is already approved, auto-advance is fine
   const nextStepApproved = sessionState !== "needs_approval";
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-2 mb-1">
             <Moon className="w-4 h-4 text-muted-foreground" />
@@ -67,7 +66,7 @@ export function OvernightModal({ open, onOpenChange, sessionState, sessionName }
         </div>
 
         <div className="min-h-[220px] flex flex-col">
-          {/* Step 0: Confirm session */}
+          {/* Step 0: Confirm session + phase limit */}
           {step === 0 && (
             <div className="space-y-4 flex-1">
               <p className="text-sm text-foreground font-medium">
@@ -84,17 +83,13 @@ export function OvernightModal({ open, onOpenChange, sessionState, sessionName }
                   This session will continue running autonomously while you're away.
                 </p>
               </div>
-            </div>
-          )}
 
-          {/* Step 1: Phase count picker */}
-          {step === 1 && (
-            <div className="space-y-4 flex-1">
-              <p className="text-sm text-foreground font-medium">
-                How many phases should Relay complete before stopping?
-              </p>
-              <div className="p-5 rounded-xl bg-muted/50 border border-border">
-                <div className="flex items-center justify-center gap-6 mb-4">
+              {/* Phase limit — integrated into step 0 */}
+              <div className="pt-2 border-t border-border/50">
+                <p className="text-sm text-foreground font-medium mb-3">
+                  How many phases should Relay complete?
+                </p>
+                <div className="flex items-center justify-center gap-6 mb-3">
                   <button
                     onClick={() => setPhaseCount(Math.max(1, phaseCount - 1))}
                     className="w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center hover:bg-secondary transition-colors active:scale-95"
@@ -103,7 +98,7 @@ export function OvernightModal({ open, onOpenChange, sessionState, sessionName }
                     <Minus className="w-4 h-4 text-foreground" />
                   </button>
                   <div className="text-center">
-                    <p className="text-4xl font-semibold text-foreground tabular-nums">{phaseCount}</p>
+                    <p className="text-3xl font-semibold text-foreground tabular-nums">{phaseCount}</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       {phaseCount === 1 ? "phase" : "phases"}
                     </p>
@@ -116,21 +111,15 @@ export function OvernightModal({ open, onOpenChange, sessionState, sessionName }
                     <Plus className="w-4 h-4 text-foreground" />
                   </button>
                 </div>
-                <p className="text-xs text-muted-foreground text-center text-pretty">
-                  Relay will complete up to {phaseCount} {phaseCount === 1 ? "phase" : "phases"}, then stop and wait for your next instruction. Each phase is one self-contained coding task.
-                </p>
-              </div>
-              <div className="flex items-center gap-2 px-1">
-                <div className="w-1 h-1 rounded-full bg-muted-foreground/40" />
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-[11px] text-muted-foreground text-center text-pretty">
                   A lower number is safer if you're unsure. You can always approve more later.
                 </p>
               </div>
             </div>
           )}
 
-          {/* Step 2: Confirm next step approved */}
-          {step === 2 && (
+          {/* Step 1: Confirm next step approved */}
+          {step === 1 && (
             <div className="space-y-4 flex-1">
               <p className="text-sm text-foreground font-medium">
                 Is the next step approved and ready to go?
@@ -173,8 +162,8 @@ export function OvernightModal({ open, onOpenChange, sessionState, sessionName }
             </div>
           )}
 
-          {/* Step 3: Preflight checks */}
-          {step === 3 && (
+          {/* Step 2: Preflight checks */}
+          {step === 2 && (
             <div className="space-y-3 flex-1">
               <div className="flex items-center justify-between">
                 <p className="text-sm text-foreground font-medium">Preflight checks</p>
@@ -193,8 +182,8 @@ export function OvernightModal({ open, onOpenChange, sessionState, sessionName }
             </div>
           )}
 
-          {/* Step 4: Result */}
-          {step === 4 && (
+          {/* Step 3: Result */}
+          {step === 3 && (
             <div className="flex-1 flex flex-col">
               {allPassed ? (
                 <div className="text-center py-6 flex-1 flex flex-col items-center justify-center">
@@ -265,9 +254,9 @@ export function OvernightModal({ open, onOpenChange, sessionState, sessionName }
             </Button>
           )}
 
-          {step < 4 ? (
+          {step < 3 ? (
             <Button variant="relay" size="sm" onClick={() => setStep(step + 1)}>
-              {step === 3 ? "See results" : "Continue"}
+              {step === 2 ? "See results" : "Continue"}
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           ) : (

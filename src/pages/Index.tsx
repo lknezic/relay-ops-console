@@ -90,7 +90,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center">
               <Radio className="w-4 h-4" />
@@ -100,15 +100,15 @@ const Index = () => {
               <p className="text-[10px] text-muted-foreground -mt-0.5">Operator Console</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Link
               to="/playbook"
-              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-muted/60"
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-2 sm:px-3 py-1.5 rounded-lg hover:bg-muted/60"
             >
               <BookOpen className="w-3.5 h-3.5" />
-              How this works
+              <span className="hidden sm:inline">How this works</span>
             </Link>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground hidden sm:inline">
               Last updated: just now
             </span>
             <div className="w-7 h-7 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-xs font-medium">
@@ -118,50 +118,50 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Dev-only state switcher */}
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mt-3">
-          <button
-            onClick={() => setShowDevTools(!showDevTools)}
-            className="flex items-center gap-1.5 text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-          >
-            <Bug className="w-3 h-3" />
-            {showDevTools ? "Hide" : "Show"} state preview (dev only)
-          </button>
-          {showDevTools && (
-            <div className="mt-2 p-3 rounded-lg bg-muted/30 border border-dashed border-border">
-              <p className="text-[10px] text-muted-foreground mb-2 font-medium uppercase tracking-wide">
-                ⚠ Dev preview — switch between states to test all views
-              </p>
-              <div className="flex items-center gap-1 flex-wrap">
-                {DEMO_STATES.map((s) => (
-                  <button
-                    key={s.value}
-                    onClick={() => setSessionState(s.value)}
-                    className={`text-[10px] px-2.5 py-1 rounded-md transition-colors ${
-                      sessionState === s.value
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-muted border border-border"
-                    }`}
-                  >
-                    {s.label}
-                  </button>
-                ))}
+      {/* Dev-only state switcher — hidden in production */}
+      {import.meta.env.DEV && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="mt-3">
+            <button
+              onClick={() => setShowDevTools(!showDevTools)}
+              className="flex items-center gap-1.5 text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+            >
+              <Bug className="w-3 h-3" />
+              {showDevTools ? "Hide" : "Show"} state preview (dev only)
+            </button>
+            {showDevTools && (
+              <div className="mt-2 p-3 rounded-lg bg-muted/30 border border-dashed border-border">
+                <p className="text-[10px] text-muted-foreground mb-2 font-medium uppercase tracking-wide">
+                  ⚠ Dev preview — switch between states to test all views
+                </p>
+                <div className="flex items-center gap-1 flex-wrap">
+                  {DEMO_STATES.map((s) => (
+                    <button
+                      key={s.value}
+                      onClick={() => setSessionState(s.value)}
+                      className={`text-[10px] px-2.5 py-1 rounded-md transition-colors ${
+                        sessionState === s.value
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground hover:bg-muted border border-border"
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Content */}
-      <main className="max-w-7xl mx-auto px-6 py-6 space-y-6">
-        {/* Status Strip — driven by single state */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
         <section className="animate-relay-fade-up">
           <StatusStrip config={config} />
         </section>
 
-        {/* Main content row */}
-        <section className="grid grid-cols-1 lg:grid-cols-5 gap-6 animate-relay-fade-up" style={{ animationDelay: "100ms" }}>
+        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6 animate-relay-fade-up" style={{ animationDelay: "100ms" }}>
           <div className="lg:col-span-3">
             <SessionHero
               sessionName={SESSION_NAME}
@@ -177,8 +177,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Lower row */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-relay-fade-up" style={{ animationDelay: "200ms" }}>
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 animate-relay-fade-up" style={{ animationDelay: "200ms" }}>
           <SessionTimeline steps={config.timelineSteps} />
           <RecentActivity events={activityEvents} />
         </section>
