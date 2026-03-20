@@ -157,7 +157,7 @@ export const STATE_CONFIGS: Record<SessionPrimaryState, StateConfig> = {
     recommendedAction: "Repair the workspace so Relay can resume the session.",
     recommendedActionSubtext: "Relay is paused until workspace is fixed",
     primaryCTA: { label: "Repair workspace" },
-    secondaryCTA: { label: "View details" },
+    secondaryCTA: { label: "Open session details" },
     overnightSafe: false,
     overnightReason: "The workspace has conflicts that need manual resolution.",
     progressSteps: [
