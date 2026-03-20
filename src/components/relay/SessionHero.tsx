@@ -23,16 +23,16 @@ export function SessionHero({
 }: SessionHeroProps) {
   return (
     <div className="relay-card-elevated p-5 sm:p-6 lg:p-8 flex flex-col h-full">
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex items-start justify-between gap-3 mb-6">
         <div>
           <p className="text-xs font-medium tracking-wide uppercase text-muted-foreground mb-2">
             Current Session
           </p>
-          <h1 className="text-xl lg:text-2xl font-semibold text-foreground text-balance leading-tight">
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-foreground text-balance leading-tight">
             {sessionName}
           </h1>
         </div>
-        <Badge variant={config.badgeVariant} className="text-xs px-3 py-1.5 shrink-0">
+        <Badge variant={config.badgeVariant} className="text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 shrink-0">
           {config.title}
         </Badge>
       </div>
@@ -76,10 +76,10 @@ export function SessionHero({
 
       {/* Actions */}
       <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-        <Button variant="relay" size="lg" onClick={onPrimaryAction} className="text-sm sm:text-base">
+        <Button variant="relay" size="default" onClick={onPrimaryAction} className="text-sm sm:text-base sm:px-6 sm:py-3">
           {config.primaryCTA.label}
         </Button>
-        <Button variant="relay-secondary" size="default" onClick={onSecondaryAction} className="text-sm">
+        <Button variant="relay-secondary" size="default" onClick={onSecondaryAction} className="text-xs sm:text-sm">
           {config.secondaryCTA.label}
         </Button>
         <button
